@@ -29,8 +29,7 @@ public class HellobootApplication {
 						String name = req.getParameter("name");
 						String hello = helloController.hello(name);
 
-						resp.setStatus(HttpStatus.OK.value());
-						resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+						resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
 						resp.getWriter().println(hello);
 					} else {
 						resp.setStatus(HttpStatus.NOT_FOUND.value());
