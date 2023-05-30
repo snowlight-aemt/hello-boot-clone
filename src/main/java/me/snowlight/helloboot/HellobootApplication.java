@@ -1,5 +1,6 @@
 package me.snowlight.helloboot;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ public class HellobootApplication {
 	}
 
 	public static void main(String[] args) {
-		MyApplication.run(HellobootApplication.class);
+		SpringApplication.run(HellobootApplication.class);
+//		MyApplication.run(HellobootApplication.class);
 	}
 }
