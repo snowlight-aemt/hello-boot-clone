@@ -1,5 +1,6 @@
 package me.snowlight.helloboot;
 
+import me.snowlight.config.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
 @MySpringBootApplication
