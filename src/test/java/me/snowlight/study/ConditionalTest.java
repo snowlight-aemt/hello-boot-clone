@@ -6,6 +6,12 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.Map;
+
 public class ConditionalTest {
     @Test
     void conditional() {
@@ -20,8 +26,15 @@ public class ConditionalTest {
         });
     }
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    @Conditional(BooleanCondition.class)
+    private @interface BooleanConditional {
+        boolean value();
+    };
+
     @Configuration
-    @Conditional(TrueCondition.class)
+    @BooleanConditional(true)
     static class MyConfig1 {
         @Bean
         public Bean1 bean() {
@@ -30,7 +43,7 @@ public class ConditionalTest {
     }
 
     @Configuration
-    @Conditional(FalseCondition.class)
+    @BooleanConditional(false)
     static class MyConfig2 {
         @Bean
         public Bean1 bean() {
@@ -41,17 +54,11 @@ public class ConditionalTest {
     static class Bean1 {
     }
 
-    static class TrueCondition implements Condition {
+    static class BooleanCondition implements Condition {
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-            return true;
-        }
-    }
-
-    static class FalseCondition implements Condition {
-        @Override
-        public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-            return false;
+            Map<String, Object> attributes = metadata.getAnnotationAttributes(BooleanConditional.class.getName());
+            return (Boolean) attributes.get("value");
         }
     }
 }
