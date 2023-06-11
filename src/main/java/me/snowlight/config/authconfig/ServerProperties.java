@@ -3,8 +3,7 @@ package me.snowlight.config.authconfig;
 import me.snowlight.config.MyConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@MyConfigurationProperties
+@MyConfigurationProperties(prefix = "server")
 public class ServerProperties {
     private String contextPath;
 
