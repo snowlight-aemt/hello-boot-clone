@@ -1,5 +1,5 @@
 me.snowlight.config.authconfig.PropertySourcesPlaceholderConfig
-me.snowlight.config.authconfig.ServerPropertiesConfig
+me.snowlight.config.authconfig.PropertyPostProcessorConfig
 me.snowlight.config.authconfig.TomcatWebServerConfig
 me.snowlight.config.authconfig.JettyWebServerConfig
 me.snowlight.config.authconfig.DispatcherServletConfig
