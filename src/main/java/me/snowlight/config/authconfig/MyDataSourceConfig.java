@@ -5,8 +5,12 @@ import me.snowlight.config.ConditionalMyOnClass;
 import me.snowlight.config.EnableMyConfigurationProperties;
 import me.snowlight.config.MyAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.support.JdbcTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.sql.Driver;
@@ -14,7 +18,8 @@ import java.sql.Driver;
 @MyAutoConfiguration
 @ConditionalMyOnClass("org.springframework.jdbc.core.JdbcOperations")
 @EnableMyConfigurationProperties(MyDataSourceProperties.class)
-public class MyDataSourceConfig {
+@EnableTransactionManagement
+public class MyDataSourceCon fig {
     @Bean
     @ConditionalMyOnClass("com.zaxxer.hikari.HikariDataSource")
     @ConditionalOnMissingBean
@@ -38,5 +43,19 @@ public class MyDataSourceConfig {
         dataSource.setPassword(properties.getPassword());
 
         return dataSource;
+    }
+
+    @Bean
+    @ConditionalOnSingleCandidate(DataSource.class)
+    @ConditionalOnMissingBean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    @ConditionalOnSingleCandidate(DataSource.class)
+    @ConditionalOnMissingBean
+    public JdbcTransactionManager transactionManager(DataSource dataSource) {
+        return new JdbcTransactionManager(dataSource);
     }
 }
